@@ -5,11 +5,11 @@ import 'dotenv/config'
 export const authOptions = {
     providers: [
         GoogleProvider({
-            clientId: "587252523602-lhmmj0hhc4hffss50buuh7j7s1891g06.apps.googleusercontent.com",
-            clientSecret: "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",
+            clientId: process.env.GOOGLE_CLIENT_ID as string,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         }),
     ],
-    secret: "8bb7c8d585451be0fb1862598ab53a04",
+    secret: process.env.JWT_SECRET,
 };
 
 export default NextAuth(authOptions);

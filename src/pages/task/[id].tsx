@@ -13,6 +13,7 @@ import {
     getDoc,
     getDocs,
     addDoc,
+    deleteDoc
 } from 'firebase/firestore';
 import { Textarea } from "../../components/textarea";
 import { FaTrash } from "react-icons/fa";
@@ -69,10 +70,22 @@ export default function Task({item,  allcomments}: TaskProps){
 
             setComments((oldItems) => [...oldItems, data]);
             setInput("");
-            setInput("")
         } catch (error) {
             console.log(error);
             
+        }
+    }
+
+    async function handleDeleteComment(id: string) {
+        try {
+          const docRef = doc(db, "comments", id);
+          await deleteDoc(docRef);
+          
+          const deleteComment = comments.filter((item) => item.id !== id);
+          setComments(deleteComment);
+        } catch (err) {
+            console.log(err);
+                        
         }
     }
 
@@ -116,7 +129,7 @@ export default function Task({item,  allcomments}: TaskProps){
                         <div className={styles.headComment}>
                             <label className={styles.commentsLabel}>{item.name}</label>
                            {item.user === session?.user?.email &&(
-                             <button className={styles.buttonTrash}>
+                             <button className={styles.buttonTrash} onClick={() => handleDeleteComment(item.id)}>
                              <FaTrash size={18} color="#EA3140"/>
                          </button>
                            )}
@@ -147,9 +160,6 @@ export const getServerSideProps: GetServerSideProps = async ({params}) =>{
             taskId: doc.data().taskId
         });
     });
-
-    console.log(allComments);
-    
 
     const snapshot = await getDoc(docRef);
 

@@ -41,7 +41,6 @@ export default function Dashboard({ user }: HomeProps){
     const [input, setInput] = useState("");
     const [publicTask, setPublicTask] = useState(false);
     const [tasks, setTasks] = useState<TaskProps[]>([]);
-console.log(user.email);
 
     useEffect(() =>{
         async function loadTarefas() {
